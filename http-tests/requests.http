@@ -1,0 +1,82 @@
+@baseUrl = http://localhost:3000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyM2U0NTY3LWU4OWItMTJkMy1hNDU2LTQyNjYxNDE3NDAwMCIsInVzZXJuYW1lIjoidGVzdHVzZXIiLCJpYXQiOjE3MzE2Mjg2NjQsImV4cCI6MTczMTYzMjI2NH0.F4b0rRjD4l9SVpS8zkbfs9bDKthaw8n5oya8OfzG0oQ
+@content = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent id diam semper, interdum velit vel, fringilla ligula. Pellentesque rutrum dui ac enim tempor, sed mattis orci congue. Duis lobortis sodales nisl, a porttitor erat venenatis iaculis. Donec efficitur lacus at ligula aliquam suscipit. Aenean at eros ultrices, efficitur tellus vel, bibendum massa. Mauris imperdiet laoreet orci in ornare. Morbi varius felis et nunc rhoncus, eu laoreet arcu maximus. Integer molestie eu sem vitae semper.
+@articleId = 88c39608-91ee-4e6b-94b6-8e5d7694c26d
+@commentId = ec90a4f0-f1fe-48e4-9732-649fb12021f6
+
+# LOGIN
+### auth/login -> OK
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "password": "Heslo123"
+}
+
+### auth/login -> ValidationError
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "testuser",
+    "password": "Heslo123xx"
+}
+
+# AUTH
+### articles/insert -> OK
+POST {{baseUrl}}/articles/insert
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Lorem Ipsum",
+  "perex": "Lorem Ipsum is simply dummy text",
+  "content": "{{content}}"
+}
+
+# ARTICLES
+### articles/:id -> OK
+GET {{baseUrl}}/articles/{{articleId}}
+Content-Type: application/json
+
+### articles -> OK
+GET {{baseUrl}}/articles
+
+### articles/update -> OK
+POST {{baseUrl}}/articles/{{articleId}}/update
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Lorem Ipsum UPDATED",
+  "perex": "Lorem Ipsum is simply dummy text",
+  "content": "{{content}}"
+}
+
+### articles/:id/delete -> OK
+POST {{baseUrl}}/articles/{{articleId}}/delete
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+# COMMENTS
+### comments -> OK
+POST {{baseUrl}}/comments
+Content-Type: application/json
+
+{
+  "articleId": "{{articleId}}",
+  "author": "Jan Novak",
+  "content": "Some comment."
+}
+
+# VOTES
+### comments/:id/voteUp -> OK
+POST {{baseUrl}}/comments/{{commentId}}/voteUp
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### comments/:id/voteDown -> OK
+POST {{baseUrl}}/comments/{{commentId}}/voteDown
+Content-Type: application/json
+Authorization: Bearer {{token}}
