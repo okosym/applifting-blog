@@ -14,7 +14,7 @@ export class AuthController {
 
   @Post("login")
   @ApiResponse({ status: 200, type: ApiStringResult, example: { success: true, data: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXV..." }, description: "Success response: returns jwt token" })
-  @ApiResponse({ status: 400, type: ApiErrorResult, description: "Error response" })
+  @ApiResponse({ status: "2XX", type: ApiErrorResult, description: "(také kód 200): Error response" })
   async login(@Body() inputDTO: LoginIN): Promise<string> {
     // call facade method
     const jwt: string = await this._authFacade.login(inputDTO.username, inputDTO.password);
